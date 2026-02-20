@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 NOSO Wetdress Launch 🚀</title>
+    <link rel="stylesheet" href="StylesTest.css">
+</head>
+<body>
+    <!-- Main Menu Screen - Super Compact -->
+    <div id="main-menu" class="main-menu">
+        <div class="main-menu-content">
+            <div class="game-logo">
+                <div class="logo-icon">🚀💖⛽</div>
+                <h1 class="logo-title">NOSO Wetdress Launch</h1>
+                <p class="logo-subtitle">Build Your NOSO Launch Empire!</p>
+            </div>
+
+            <!-- User Info -->
+            <div id="user-info" class="user-info">
+                <div class="user-name">Welcome, <span id="display-name">Player</span>! 👋</div>
+                <button id="logout-btn" class="btn-logout" style="display:none;">Logout</button>
+            </div>
+
+            <div class="menu-buttons">
+                <button id="menu-start-btn" class="menu-btn menu-btn-start">
+                    <span class="btn-icon">🎮</span>
+                    <span class="btn-text">Start Game</span>
+                </button>
+                <button id="menu-instructions-btn" class="menu-btn menu-btn-secondary">
+                    <span class="btn-icon">📖</span>
+                    <span class="btn-text">How to Play</span>
+                </button>
+                <button id="menu-leaderboard-btn" class="menu-btn menu-btn-secondary">
+                    <span class="btn-icon">🏆</span>
+                    <span class="btn-text">Leaderboard</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboard-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🏆 Top Players 🏆</h2>
+                <span class="close-btn" id="close-leaderboard">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="leaderboard-stats">
+                    <div class="your-rank">
+                        <strong>Your Rank</strong>
+                        <span id="your-rank">--</span>
+                    </div>
+                    <div class="your-score">
+                        <strong>Your Score</strong>
+                        <span id="your-score">0</span> pts
+                    </div>
+                </div>
+                <div id="leaderboard-list" class="leaderboard-list">
+                    <div class="loading">Loading leaderboard... 🔄</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instructions Modal -->
+    <div id="instructions-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📖 How to Play 📖</h2>
+                <span class="close-btn" id="close-instructions">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="instruction-section">
+                    <h3>🎯 Goal</h3>
+                    <p>Serve customers quickly and earn money to upgrade your launch capabilities!</p>
+                </div>
+
+                <div class="instruction-section">
+                    <h3>🎮 How to Play</h3>
+                    <ol>
+                        <li><strong>Click a customer</strong> in the waiting area</li>
+                        <li><strong>Select their service</strong> station</li>
+                        <li><strong>Drag them</strong> to the correct station</li>
+                        <li><strong>Wait</strong> for service to complete</li>
+                        <li><strong>Collect payment!</strong> 💰</li>
+                    </ol>
+                </div>
+
+                <div class="instruction-section">
+                    <h3>💡 Tips</h3>
+                    <ul>
+                        <li>⏱️ Serve customers fast before they leave!</li>
+                        <li>⭐ 10 happy customers = Level Up!</li>
+                        <li>🛍️ Buy upgrades in the shop</li>
+                        <li>💵 Upgrades give passive income</li>
+                    </ul>
+                </div>
+
+                <div class="instruction-section">
+                    <h3>🏪 Services</h3>
+                    <div class="services-grid">
+                        <div class="service-item">
+                            <div class="service-icon">⏲️</div>
+                            <div class="service-name">35 Minutes</div>
+                            <div class="service-price">$1000000</div>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon">🗳️</div>
+                            <div class="service-name">AI Poll</div>
+                            <div class="service-price">$500000</div>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon">📅</div>
+                            <div class="service-name">NOSO Sequencer</div>
+                            <div class="service-price">$100000</div>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon">💸</div>
+                            <div class="service-name">Automatic</div>
+                            <div class="service-price">$500000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="instruction-footer">
+                    <p><strong>Ready? Close this and start playing! 💖</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save Score Modal -->
+    <div id="save-score-modal" class="modal">
+        <div class="modal-content save-score-content">
+            <div class="modal-header save-score-header">
+                <h2 id="save-score-title">🎉 Save Your Score! 🎉</h2>
+            </div>
+            <div class="modal-body">
+                <div class="final-score-display">
+                    <div class="score-label">Your Final Score</div>
+                    <div class="score-value" id="final-score-value">0</div>
+                    <div class="score-breakdown">
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">💰 Money Earned:</span>
+                            <span class="breakdown-value" id="breakdown-money">$0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">⭐ Level Reached:</span>
+                            <span class="breakdown-value" id="breakdown-level">1</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">😊 Happy Customers:</span>
+                            <span class="breakdown-value" id="breakdown-customers">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="save-score-form">
+                    <p class="save-prompt">Enter your name for the leaderboard:</p>
+                    <input type="text" id="save-score-name" placeholder="Your Name" class="auth-input" maxlength="20">
+                    <div class="save-score-buttons">
+                        <button id="submit-score-btn" class="auth-btn auth-btn-primary">💾 Save Score</button>
+                        <button id="skip-save-btn" class="auth-btn auth-btn-secondary">Skip</button>
+                    </div>
+                </div>
+
+                <div id="save-success" class="save-success" style="display: none;">
+                    <div class="success-icon">✅</div>
+                    <p>Score saved successfully!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- In-Game Leaderboard Modal -->
+    <div id="game-leaderboard-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🏆 Leaderboard 🏆</h2>
+                <span class="close-btn" id="close-game-leaderboard">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="leaderboard-tabs">
+                    <button class="leaderboard-tab active" data-tab="all-time">All Time</button>
+                    <button class="leaderboard-tab" data-tab="today">Today</button>
+                    <button class="leaderboard-tab" data-tab="this-week">This Week</button>
+                </div>
+
+                <div class="leaderboard-stats">
+                    <div class="your-rank">
+                        <strong>Your Rank</strong>
+                        <span id="game-your-rank">--</span>
+                    </div>
+                    <div class="your-score">
+                        <strong>Your Score</strong>
+                        <span id="game-your-score">0</span> pts
+                    </div>
+                </div>
+
+                <div id="game-leaderboard-list" class="leaderboard-list">
+                    <div class="loading">Loading leaderboard... 🔄</div>
+                </div>
+
+                <button id="refresh-leaderboard-btn" class="auth-btn auth-btn-secondary" style="margin-top: 15px;">
+                    🔄 Refresh
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Container -->
+    <div class="game-container" id="game-container" style="display: none;">
+        <header>
+            <h1>💖 NOSO Wetdress Launch 💖</h1>
+            <div class="stats">
+                <div class="stat">
+                    <span class="label">💰 Money:</span>
+                    <span id="money" class="value">$0</span>
+                </div>
+                <div class="stat">
+                    <span class="label">💵 Passive Income:</span>
+                    <span id="passive-income" class="value">$0/min</span>
+                </div>
+                <div class="stat">
+                    <span class="label">⭐ Level:</span>
+                    <span id="level" class="value">1</span>
+                </div>
+                <div class="stat">
+                    <span class="label">😊 Happy Customers:</span>
+                    <span id="satisfied" class="value">0</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="spa-area">
+                <h2>✨ Service Stations ✨</h2>
+                <div class="stations">
+                    <div class="station" id="station-1">
+                        <div class="station-icon">⏲️</div>
+                        <div class="station-name">35 Minutes</div>
+                        <div class="station-status"></div>
+                        <div class="progress-container"></div>
+                    </div>
+                    <div class="station" id="station-2">
+                        <div class="station-icon">🗳️</div>
+                        <div class="station-name">AI Poll Station</div>
+                        <div class="station-status"></div>
+                        <div class="progress-container"></div>
+                    </div>
+                    <div class="station" id="station-3">
+                        <div class="station-icon">📅</div>
+                        <div class="station-name">NOSO Sequencer Station</div>
+                        <div class="station-status"></div>
+                        <div class="progress-container"></div>
+                    </div>
+                    <div class="station" id="station-4">
+                        <div class="station-icon">💸</div>
+                        <div class="station-name">Automatic Station</div>
+                        <div class="station-status"></div>
+                        <div class="progress-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="waiting-area">
+                <h2>💺 Waiting Area</h2>
+                <div id="customer-queue" class="customer-queue">
+                    <!-- Customers will appear here -->
+                </div>
+                <div class="queue-info">
+                    <p>Click on customers to take them to their service!</p>
+                </div>
+            </div>
+        </main>
+
+        <div class="controls">
+            <button id="main-menu-btn" class="btn btn-menu">🏠 Main Menu</button>
+            <button id="start-btn" class="btn btn-start">🎮 Start Game</button>
+            <button id="pause-btn" class="btn btn-pause" disabled>⏸️ Pause</button>
+            <button id="shop-btn" class="btn btn-shop">🛍️ Upgrade Shop</button>
+            <button id="game-leaderboard-btn" class="btn btn-leaderboard">🏆 Leaderboard</button>
+        </div>
+
+        <div class="notifications" id="notifications"></div>
+    </div>
+
+    <!-- Spa Environment Modal -->
+    <div id="spa-environment" class="environment-modal">
+        <div class="environment-content">
+            <div class="environment-header">
+                <h2>🏨 Take Customer to Their Station 🏨</h2>
+            </div>
+            <div class="environment-body">
+                <div class="customer-display">
+                    <div id="env-customer" class="env-customer">
+                        <!-- Customer info will be shown here -->
+                    </div>
+                </div>
+                <div class="environment-stations">
+                    <div class="env-station" data-station-id="1">
+                        <div class="env-station-icon">⏲️</div>
+                        <div class="env-station-name">35 Minutes</div>
+                        <div class="env-station-slots"></div>
+                    </div>
+                    <div class="env-station" data-station-id="2">
+                        <div class="env-station-icon">🗳️</div>
+                        <div class="env-station-name">AI Poll</div>
+                        <div class="env-station-slots"></div>
+                    </div>
+                    <div class="env-station" data-station-id="3">
+                        <div class="env-station-icon">📅</div>
+                        <div class="env-station-name">NOSO Sequencer</div>
+                        <div class="env-station-slots"></div>
+                    </div>
+                    <div class="env-station" data-station-id="4">
+                        <div class="env-station-icon">💸</div>
+                        <div class="env-station-name">Automatic</div>
+                        <div class="env-station-slots"></div>
+                    </div>
+                </div>
+                <div class="environment-instruction">
+                    <p>👆 Click on the station that matches the customer's service!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2D Spa Environment -->
+    <div id="spa-2d-view" class="spa-2d-modal">
+        <div class="spa-2d-content">
+            <div class="spa-2d-header">
+                <h2>🏨 Drag Customer to Station 🏨</h2>
+                <div class="customer-info-bar">
+                    <span id="drag-customer-name"></span> needs 
+                    <span id="drag-customer-service"></span>
+                </div>
+            </div>
+            <div class="spa-2d-floor">
+                <!-- Draggable Customer -->
+                <div id="draggable-customer" class="draggable-customer">
+                    <div class="drag-customer-icon"></div>
+                    <div class="drag-customer-name"></div>
+                </div>
+
+                <!-- Reception/Entrance -->
+                <div class="spa-entrance">
+                    <div class="entrance-icon">📝</div>
+                    <div class="entrance-label">Task</div>
+                </div>
+
+                <!-- Station Areas -->
+                <div class="spa-station-area" data-station-id="1">
+                    <div class="spa-station-icon">⏲️</div>
+                    <div class="spa-station-label">35 Minutes</div>
+                </div>
+
+                <div class="spa-station-area" data-station-id="2">
+                    <div class="spa-station-icon">🗳️</div>
+                    <div class="spa-station-label">AI Poll</div>
+                </div>
+
+                <div class="spa-station-area" data-station-id="3">
+                    <div class="spa-station-icon">📅</div>
+                    <div class="spa-station-label">NOSO Sequencer</div>
+                </div>
+
+                <div class="spa-station-area" data-station-id="4">
+                    <div class="spa-station-icon">💸</div>
+                    <div class="spa-station-label">Automatic</div>
+                </div>
+            </div>
+            <div class="spa-2d-instruction">
+                <p>👆 Drag the customer to their service station!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shop Modal -->
+    <div id="shop-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🛍️ Upgrade Shop 🛍️</h2>
+                <span class="close-btn" id="close-shop">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p class="shop-description">Purchase amenities to increase customer satisfaction and earn passive income!</p>
+                <div id="shop-items" class="shop-items">
+                    <!-- Shop items will be generated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="leaderboard-test1.js"></script>
+    <script src="game-tests.js"></script>
+</body>
+</html>
