@@ -34,10 +34,10 @@ const game = {
 
 // Service definitions
 const services = [
-    { name: '35 minutes', icon: '⏲️', duration: 5000, price: 50, station: 1 },
-    { name: 'AI Poll', icon: '🗳️', duration: 6000, price: 60, station: 2 },
-    { name: 'NOSO Sequencer', icon: '📅', duration: 7000, price: 80, station: 3 },
-    { name: 'Automatic', icon: '💸', duration: 8000, price: 100, station: 4 }
+    { name: '35 minutes', icon: '⏲️', duration: 5000, price: 500, station: 1 },
+    { name: 'AI Poll', icon: '🗳️', duration: 6000, price: 600, station: 2 },
+    { name: 'NOSO Sequencer', icon: '📅', duration: 7000, price: 800, station: 3 },
+    { name: 'Automatic', icon: '💸', duration: 8000, price: 1000, station: 4 }
 ];
 
 // Upgrade definitions
