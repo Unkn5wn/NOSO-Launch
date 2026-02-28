@@ -240,10 +240,10 @@ main {
     font-size: 1.2em;
 }
 
-/* Stations Grid Layout - 2x2 like customers */
+/* Stations Grid Layout - 3x3 like customers */
 .stations {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
 }
 
@@ -568,6 +568,8 @@ main {
 }
 
 .modal-header h2 {
+    display:block
+    width: 100%
     margin: 0 0 10px 0;
     text-align: center;
     color: #000000;
@@ -586,7 +588,7 @@ main {
     height: 40px;
     border-radius: 50%;
     cursor: pointer;
-    display: flex;
+    display: block;
     align-items: flex-end;
     justify-content: center;
     transition: all 0.3s ease;
@@ -966,7 +968,8 @@ main {
 }
 
 .shop-item-name {
-    font-size: 1.3em;
+    font-
+size: 1.3em;
     font-weight: bold;
     color: #333;
     text-align: center;
@@ -1071,8 +1074,9 @@ main {
 }
 
 .service-icon {
-    font-size: 2.5em;
-    margin-bottom: 8px;
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 5px;
 }
 
 .service-name {
@@ -1184,7 +1188,7 @@ main {
 /* Environment Stations - Compact Grid */
 .environment-stations {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     margin-bottom: 12px;
 }
@@ -1241,7 +1245,8 @@ main {
 }
 
 .env-station-icon {
-    font-size: 2.5em;
+    font-size: 2em;
+    text-align: center;
     margin-bottom: 5px;
 }
 
@@ -1378,33 +1383,52 @@ main {
 .spa-station-area {
     position: absolute;
     background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+    font-weight: bold;
     padding: 15px;
     border-radius: 15px;
     border: 3px solid #ddd;
     text-align: center;
+    height: 125px;
     width: 150px;
     transition: all 0.3s ease;
 }
 
 .spa-station-area[data-station-id="1"] {
+    font-weight: bold;
     top: 20px;
     left: 20px;
 }
 
 .spa-station-area[data-station-id="2"] {
+    font-weight: bold;
     top: 20px;
     right: 20px;
 }
 
 .spa-station-area[data-station-id="3"] {
-    top: 180px;
+    font-weight: bold;
+    top: 159px;
     left: 20px;
 }
 
 .spa-station-area[data-station-id="4"] {
-    top: 180px;
+    font-weight: bold;
+    top: 159px;
     right: 20px;
 }
+
+.spa-station-area[data-station-id="5"] {
+   font-weight: bold;
+   top: 302px;
+   left: 710px;
+}
+
+.spa-station-area[data-station-id="6"] {
+    font-weight: bold;
+    top: 302px;
+    left: 20px;
+}
+
 
 .spa-station-area.highlight {
     border-color: #ffd700;
@@ -1430,14 +1454,15 @@ main {
 }
 
 .spa-station-icon {
-    font-size: 2.5em;
+    font-size: 2em;
+    text-align: center;
     margin-bottom: 5px;
 }
 
 .spa-station-label {
     font-weight: bold;
     color: #333;
-    font-size: 1.1em;
+    font-size: 1.1me;
 }
 
 .spa-2d-instruction {
@@ -1652,11 +1677,11 @@ main {
 /* Mobile Responsive - Game */
 @media (max-width: 768px) {
     main {
-        grid-template-columns: 1fr;
+        grid-template-columns: 2fr;
     }
     
     .stations {
-        grid-template-columns: 1fr;
+        grid-template-columns: 2fr;
         gap: 10px;
     }
     
