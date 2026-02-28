@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="StylesTest.css">
 </head>
 <body>
+    <!--Audio Controls--!>
+    <audio id="music here" loop>
+    <source src="your_music_here.ogg" type="audio/ogg">
+    <source src="your_music_here.mp3" type="audio/mpeg">
+     Your browser does not support the audio element.
+    </audio>
+
     <!-- Main Menu Screen - Super Compact -->
     <div id="main-menu" class="main-menu">
         <div class="main-menu-content">
@@ -121,9 +128,19 @@
                             <div class="service-name">Automatic</div>
                             <div class="service-price">$1000</div>
                         </div>
-                    </div>
+                        <div class="service-item">
+                            <div class="service-icon">🍔</div>
+                            <div class="service-name">BGLR</div>
+                            <div class="service-price">$700</div>
+                        </div>
+                       <div class="service-item">
+                            <div class="service-icon">⭐</div>
+                            <div class="service-name">Weather</div>
+                            <div class="service-price">$1100</div>
+                        </div>
+                        
                 </div>
-
+          </div>
                 <div class="instruction-footer">
                     <p><strong>Ready? Close this and start playing! 💖</strong></p>
                 </div>
@@ -262,6 +279,18 @@
                         <div class="station-status"></div>
                         <div class="progress-container"></div>
                     </div>
+                    <div class="station" id="station-5">
+                        <div class="station-icon">🍔</div>
+                        <div class="station-name">BGLR Station</div>
+                        <div class="station-status"></div>
+                        <div class="progress-container"></div>
+                    </div>
+                    <div class="station" id="station-6">
+                        <div class="station-icon">⭐</div>
+                        <div class="station-name">Weather Station</div>
+                        <div class="station-status"></div>
+                        <div class="progress-container"></div>
+                    </div>
                 </div>
             </div>
 
@@ -320,7 +349,20 @@
                         <div class="env-station-name">Automatic</div>
                         <div class="env-station-slots"></div>
                     </div>
+                     <div class="env-station" data-station-id="5">
+                        <div class="env-station-icon">🍔</div>
+                        <div class="env-station-name">BGLR</div>
+                        <div class="env-station-slots"></div>
+                    </div>
+                     <div class="env-station" data-station-id="6">
+                        <div class="env-station-icon">⭐</div>
+                        <div class="env-station-name">Weather</div>
+                        <div class="env-station-slots"></div>
+                    </div>
+                  </div>
                 </div>
+              </div>
+         </div>
                 <div class="environment-instruction">
                     <p>👆 Click on the station that matches the customer's service!</p>
                 </div>
@@ -371,7 +413,16 @@
                     <div class="spa-station-icon">💸</div>
                     <div class="spa-station-label">Automatic</div>
                 </div>
+                <div class="spa-station-area" data-station-id="5">
+                    <div class="spa-station-icon">🍔</div>
+                    <div class="spa-station-label">BGLR</div>
+                </div>
+                <div class="spa-station-area" data-station-id="6">
+                    <div class="spa-station-icon">⭐</div>
+                    <div class="spa-station-label">Weather</div>
+                </div>
             </div>
+         </div>
             <div class="spa-2d-instruction">
                 <p>👆 Drag the customer to their service station!</p>
             </div>
