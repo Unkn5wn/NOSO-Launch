@@ -10,14 +10,17 @@ const game = {
         { id: 1, name: '35 Minutes', icon: '⏲️', slots: [null], maxSlots: 1 },
         { id: 2, name: 'AI Poll', icon: '🗳️', slots: [null], maxSlots: 1 },
         { id: 3, name: 'NOSO Sequencer', icon: '📅', slots: [null], maxSlots: 1 },
-        { id: 4, name: 'Automatic', icon: '💸', slots: [null], maxSlots: 1 }
+        { id: 4, name: 'Automatic', icon: '💸', slots: [null], maxSlots: 1 },
+        { id: 5, name: 'BGLR', icon: '🍔', slots: [null], maxSlots: 1 },
+        { id: 6, name: 'Weather', icon: '⭐', slots: [null], maxSlots: 1 }
     ],
     customerIdCounter: 0,
     upgrades: {
         refuel: { level: 0, maxLevel: 3 },
         connection: { level: 0, maxLevel: 3 },
         launch: { level: 0, maxLevel: 3 },
-        result: { level: 0, maxLevel: 3 }
+        result: { level: 0, maxLevel: 3 },
+        bro: { level: 0, maxLevel: 3 }
     },
     passiveIncome: 0,
     lastPassiveIncomeTime: Date.now(),
@@ -37,7 +40,9 @@ const services = [
     { name: '35 minutes', icon: '⏲️', duration: 5000, price: 500, station: 1 },
     { name: 'AI Poll', icon: '🗳️', duration: 6000, price: 600, station: 2 },
     { name: 'NOSO Sequencer', icon: '📅', duration: 7000, price: 800, station: 3 },
-    { name: 'Automatic', icon: '💸', duration: 8000, price: 1000, station: 4 }
+    { name: 'Automatic', icon: '💸', duration: 8000, price: 1000, station: 4 },
+    { name: 'BGLR', icon: '🍔', duration: 9000, price:700, station: 5 },
+    { name: 'Weather', icon: '⭐', duration:10000, price:1100, station: 6}
 ];
 
 // Upgrade definitions
@@ -81,7 +86,17 @@ const upgradeDefinitions = {
         incomePerLevel: 15,
         tipBonus: 25,
         maxLevel: 3
-    }
+    },
+    bro: {
+    name: 'Bypass Bro',
+        icon: '🛰️',
+        description: 'Bypass the hackers and benefits from increasing rocket capability!',
+        baseCost: 800,
+        costMultiplier: 2,
+        incomePerLevel: 15,
+        tipBonus: 25,
+        maxLevel: 3
+     }
 };
 
 // Customer names
@@ -310,6 +325,12 @@ function setupMainMenu() {
         }
     }
     
+// Play Audio when game starts after clicking a "Start Game" button
+function startGame() {
+    var bgMusic = document.getElementById("FIVERSPACE");
+    bgMusic.play();
+    
+}
     // Function to start game from main menu
     function startGameFromMenu() {
         console.log('Starting game from menu...');
@@ -355,14 +376,19 @@ function resetGame() {
         { id: 1, name: '35 Minutes', icon: '⏲️', slots: [null], maxSlots: 1 },
         { id: 2, name: 'AI Poll', icon: '🗳️', slots: [null], maxSlots: 1 },
         { id: 3, name: 'NOSO Sequencer', icon: '📅', slots: [null], maxSlots: 1 },
-        { id: 4, name: 'Automatic', icon: '💸', slots: [null], maxSlots: 1 }
+        { id: 4, name: 'Automatic', icon: '💸', slots: [null], maxSlots: 1 },
+        { id: 5, name: 'BGLR', icon: '🍔', slots: [null], maxSlots: 1 },
+        { id: 6, name: 'Weather', icon: '⭐', slots: [null], maxSlots: 1}
+        
+        
     ];
     
     game.upgrades = {
         refuel: { level: 0, maxLevel: 3 },
         connection: { level: 0, maxLevel: 3 },
         launch: { level: 0, maxLevel: 3 },
-        result: { level: 0, maxLevel: 3 }
+        result: { level: 0, maxLevel: 3 },
+        bro: { level: 0, maxLevel: 3 }
     };
     
     game.passiveIncome = 0;
@@ -987,12 +1013,12 @@ function completeService(station, slotIndex) {
 function unlockStationSlot() {
     const randomStation = game.stations[Math.floor(Math.random() * game.stations.length)];
     
-    if (randomStation.maxSlots < 5) {
+    if (randomStation.maxSlots < 2) {
         randomStation.maxSlots++;
         randomStation.slots.push(null);
         showNotification(`${randomStation.icon} ${randomStation.name} Station upgraded! Now has ${randomStation.maxSlots} slots! ✨`, 'success');
     } else {
-        const nonMaxedStation = game.stations.find(s => s.maxSlots < 5);
+        const nonMaxedStation = game.stations.find(s => s.maxSlots < 2);
         if (nonMaxedStation) {
             nonMaxedStation.maxSlots++;
             nonMaxedStation.slots.push(null);
