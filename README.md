@@ -1,2 +1,63 @@
-# NOSO-Launch
-fun ransomware game
+# NOSO Launch
+
+NOSO Launch is an original indie game created by [Unkn5wn]. Dive into exciting gameplay, master unique mechanics, and challenge yourself to reach the highest score! NOSO Launch is not related to any cryptocurrency or blockchain project—it is entirely its own, for gamers of all backgrounds.
+
+## Features
+
+- **Fun Gameplay:** Simple to learn, challenging to master.
+- **Unique Mechanics:** Enjoy game dynamics and features tailored for a memorable experience.
+- **High Score Tracking:** Compete with yourself and friends.
+- **Cross-Platform:** Runs on major operating systems (see instructions below).
+
+## Getting Started
+
+### Prerequisites
+
+- [Git](https://git-scm.com/) to clone the repository.
+- Platform or language-specific requirements (e.g., Python, Unity, Godot, etc.—see project files for details).
+
+### Installation
+
+1. **Clone the repository**:
+    ```sh
+    git clone https://github.com/Unkn5wn/NOSO-Launch.git
+    cd NOSO-Launch
+    ```
+2. **Install dependencies**:
+    - Look for a `requirements.txt` (Python) or other installation instructions in the project folder.
+    - Follow any platform- or engine-specific setup.
+
+3. **Run the game**:
+   
+
+## Gameplay
+
+- **Objective:**
+- The player needs to take the customer to the correct station in order for the task to be completed.
+- **Controls:**
+    - Mouse: Simple and to the point
+    
+
+## Contributing
+
+Contributions are welcome! To contribute:
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/my-feature`)
+3. Commit your changes (`git commit -am 'Add new feature'`)
+4. Push to the branch (`git push origin feature/my-feature`)
+5. Open a Pull Request
+
+Please document your code and provide clear explanations.
+
+## License
+
+Distributed under the MIT License. See the `LICENSE` file for more information.
+
+## Credits
+
+Game developed by [Unkn5wn].
+
+---
+
+*Have fun playing NOSO Launch! Suggestions, feedback, and pull requests are always appreciated.*
