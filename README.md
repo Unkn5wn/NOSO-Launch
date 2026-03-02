@@ -11,6 +11,7 @@ NOSO Launch is an original indie game created by [Unkn5wn]. Dive into exciting g
 - **Unique Mechanics:** Enjoy game dynamics and features tailored for a memorable experience.
 - **High Score Tracking:** Compete with yourself and friends.
 - **Cross-Platform:** Runs on major operating systems (see instructions below).
+- **Background Music:** I added a sample of a mp3 and ogg file. Feel free to use your favorite mp3 and ogg file for the game. Making it customizable. ***MUST DOWNLOAD SO IT WORKS**
 
 ## Getting Started
 
