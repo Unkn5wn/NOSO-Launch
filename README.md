@@ -1,6 +1,7 @@
 # NOSO Launch
 
 NOSO Launch is an original indie game created by [Unkn5wn]. Dive into exciting gameplay, master unique mechanics, and challenge yourself to reach the highest score! NOSO Launch is not related to any cryptocurrency or blockchain project—it is entirely its own, for gamers of all backgrounds.
+<img width="1363" height="634" alt="Main Screen" src="https://github.com/user-attachments/assets/df5227b6-626f-4474-a4ac-ff09b2d2ff4f" />
 
 ## Features
 
