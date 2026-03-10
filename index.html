@@ -42,9 +42,13 @@
                     <span class="btn-icon">🏆</span>
                     <span class="btn-text">Leaderboard</span>
                 </button>
-                 <button id="startMinigameBtn" class="menu-btn menu-btn-secondary">
+               <button id="startMinigameBtn" class="menu-btn menu-btn-secondary">
                     <span class="btn-icon">🎲</span>
                     <span class="btn-text">Mini Game</span>
+                </button>
+                <button id="startRocketgameBtn" class="menu-btn menu-btn-secondary">
+                    <span class="btn-icon">⛽</span>
+                    <span class="btn-text">Rocket MiniGame</span>
                 </button>
 
              <script>
@@ -53,6 +57,13 @@
               window.open('minigame.html', '_blank'); // Opens in a new tab
               }
             </script>
+              <script>
+              document.getElementById('startRocketgameBtn').onclick = 
+              function () {
+              window.open('rocketgamefuel.html', '_blank'); // Opens in a new tab
+              }
+            </script>
+
             </div>
         </div>
     </div>
@@ -148,8 +159,7 @@
                             <div class="service-icon">⭐</div>
                             <div class="service-name">Weather</div>
                             <div class="service-price">$1100</div>
-                        </div>
-                        
+                        </div>    
                 </div>
           </div>
                 <div class="instruction-footer">
@@ -456,7 +466,26 @@
         </div>
     </div>
 
-    <script src="leaderboard.js"></script>
-    <script src="game.js"></script>
+   <!-- Mini Game Modal -->
+   <div id="minigameModal" style="display: none;">
+     <div class="modal-content">
+      <div class="modal-header">
+       <h2> 🚀NOSO-Launch Mini-Game🚀</h2>
+       <span class="close-btn" id="close-minigame">&times;</span>
+      <canvas id="gameCanvas" width="400" height="400"></canvas>
+      <div id="gameOver" style="display:none">
+      <span id="finalScore"></span>
+      <button onclick="restartGame()">Play Again</button>
+</div>
+     </div>
+         <div class="modal-body">
+               <p class="minigame-description"> Move: W/S |&nbsp; Shoot: Space</p>
+              <button id="closeMinigameBtn">Close</button> 
+          </div>
+       </div>
+   </div>
+    <script src="Leaderboard-test1.js"></script>
+    <script src="Game-tests.js"></script>
+    <script src="minigame.js"></script>
 </body>
 </html>
