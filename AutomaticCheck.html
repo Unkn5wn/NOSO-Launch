@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Automatic Check Game</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body {
+      background: #23264d;
+      color: #e3f2fd;
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0; min-height: 100vh;
+    }
+    .container {
+      max-width: 760px;
+      margin: 38px auto 32px auto;
+      background: rgba(30,34,60,0.98);
+      padding: 30px 14px 24px 14px;
+      border-radius: 16px;
+      box-shadow: 0 3px 40px #223, 0 0px 0 2.5px #dde1ff33;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 12px;
+      color: #ffebc9;
+    }
+    .scorebar {
+      text-align:center;
+      font-size: 1.05em;
+      margin: 6px 0 15px 0;
+      color: #f7eba0;
+      font-weight: bold;
+    }
+    .main-columns {
+      display: flex;
+      gap: 28px;
+      justify-content: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .col {
+      background: rgba(44,49,88,0.98);
+      border-radius: 11px;
+      padding: 16px 14px;
+      box-shadow: 0 2px 12px #2c3755ac;
+      min-width: 220px;
+      flex: 1 1 240px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+    }
+    .col h3 {
+      color: #ffeeaa;
+      font-size: 18px;
+      margin: 0 0 11px 0;
+    }
+    ul {
+      margin: 0 0 0 18px;
+      padding: 0;
+      color: #aeefff;
+      font-size: 15px;
+    }
+    .checklist li {
+      margin-bottom: 6px;
+      font-size: 15.5px;
+      list-style-type: "— ";
+    }
+    .checklist strong { color: #e3bd57; }
+    .check-sum { font-weight: bold; color: #8ffcce; }
+    .controls {
+      margin: 19px 0 10px 0;
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .button-row {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 5px;
+    }
+    .button-row button {
+      font-size: 13px;
+      background: #146593;
+      border: none;
+      border-radius: 7px;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #0080c099;
+      letter-spacing: 1px;
+      transition: background 0.12s;
+      min-width: 135px;
+      max-width: 210px;
+      padding: 7px 0;
+      text-align: center;
+      flex: 1 1 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    .button-row button:hover { background: #3196c7; }
+
+    .reason-area {
+      margin-bottom: 0;
+      width: 100%;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 3px;
+    }
+    .reason-area label {
+      background: none;
+      color: #fffacd;
+      font-size: 13px;
+      font-weight: normal;
+      cursor: pointer;
+      padding: 4px 2px 4px 0;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      min-width: 135px;
+      max-width: 300px;
+    }
+    .controls input[type="checkbox"] {
+      transform: scale(1.11);
+      margin-right: 15px;
+    }
+    #submitBtn {
+      font-size: 14px;
+      background: #146593;
+      padding: 7px 0;
+      border: none;
+      border-radius: 7px;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #0080c099;
+      letter-spacing: 1px;
+      transition: background 0.12s;
+      width: 95%;
+      min-width: 110px;
+      max-width: 300px;
+      margin: 9px auto 0 auto;
+    }
+    #submitBtn:hover { background: #3196c7; }
+    .success { color: #a0ffb6; font-weight: bold; }
+    .wrong   { color: #ffe363; font-weight: bold; }
+    .status { text-align: center; font-size: 1.11em; margin: 10px 0 0 0; min-height: 24px;}
+    .footer {
+      text-align: center;
+      margin: 38px 0 0 0;
+      color: #e5e7ff89;
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+    .tipbar {
+      display: block;
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      background: #35377a;
+      color: #ffd;
+      font-size: 1.01em;
+      padding: 9px 2vw 5px 2vw;
+      text-align: center;
+      font-family: Arial,sans-serif;
+      letter-spacing: 1px;
+      z-index: 10;
+      border-top: 2.5px solid #cde9ff27;
+      box-shadow: 0 -2px 18px #13213799;
+      user-select: none;
+      opacity: 0.96;
+      min-height: 28px;
+      font-weight: 600;
+    }
+    .tipbar span {
+      color: #8beaff;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+    .trans {
+      color: #95ceff;
+      font-size: 12px;
+      margin-left: 6px;
+      font-family: monospace;
+      background: #293b51;
+      border-radius: 3px;
+      padding: 0 5px;
+    }
+    .alloc {
+      display: block;
+      font-size: 11.5px;
+      margin-top: 0.5px;
+      color: #f7eba0;
+      font-family: monospace;
+      margin-left: 5px;
+    }
+
+    @media (max-width: 650px) {
+      .container { max-width: 98vw; }
+      .main-columns { flex-direction: column; gap: 10px; }
+      .col { min-width: 0; width: 98vw; }
+      .reason-area, .controls, .button-row { max-width: 96vw; }
+      .button-row { gap: 5px; }
+      .button-row button { min-width: 86px; font-size:11.5px; padding: 6px 0; }
+      .controls { padding-left: 0; padding-right: 0;}
+    }
+    @media (max-width: 430px) {
+      .container { padding-left: 2vw; padding-right: 2vw; }
+      .main-columns, .col, .controls, .reason-area { min-width: 0; max-width: 100vw; }
+      .button-row button, .controls label, #submitBtn { font-size:10.5px; min-width: 64px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Automatic Check Game</h1>
+    <div class="scorebar">
+      Correct: <span id="scoreGood">0</span>
+      &nbsp;|&nbsp;
+      Missed: <span id="scoreBad">0</span>
+    </div>
+    <div class="main-columns">
+      <div class="col">
+        <h3>Client Invoice</h3>
+        <ul id="bill-list" class="checklist"></ul>
+        <div><span class="check-sum">Total: $<span id="bill-total"></span></span></div>
+      </div>
+      <div class="col">
+        <h3>Checks Received</h3>
+        <ul id="check-list" class="checklist"></ul>
+        <div><span class="check-sum">Total: $<span id="check-total"></span></span></div>
+      </div>
+    </div>
+    <form class="controls" onsubmit="return false;">
+      <div class="button-row">
+        <button type="button" onclick="approve()" id="approveBtn">Everything paid exactly</button>
+        <button type="button" onclick="showReasonArea()" id="problemBtn">There's a problem</button>
+      </div>
+      <span class="reason-area" id="reasonArea" style="display:none;">
+        <label><input type="checkbox" value="missing" class="errChk"> Missing Payment</label>
+        <label><input type="checkbox" value="extra" class="errChk"> Extra Check</label>
+        <label><input type="checkbox" value="amount" class="errChk"> Wrong Amount</label>
+        <label><input type="checkbox" value="tx" class="errChk"> Transaction Number Mismatch</label>
+        <label><input type="checkbox" value="combined" class="errChk"> Check Covers Multiple Bills</label>
+        <button type="button" onclick="submitReason()" id="submitBtn">Submit</button>
+      </span>
+    </form>
+    <div class="status" id="status"></div>
+    <div class="footer">Game by Copilot &amp; Unkn5wn</div>
+    <div class="tipbar" id="tipbar"></div>
+  </div>
+  <script>
+    function rand6digits() {
+      return String(Math.floor(Math.random() * 900000) + 100000);
+    }
+    const clients = [
+      {name:"OrbitSpace", bills:[{desc: "Satellite Uplink", amount: 600},{desc: "Ground Support", amount: 240},{desc: "Downlink Relay", amount: 160}]},
+      {name:"AstroEdge", bills:[{desc: "Lunar Module", amount: 1200},{desc: "Fueling", amount: 330}]},
+      {name:"GalacticNet", bills:[{desc:"Space Suit Refurbish", amount:180},{desc:"Module Delivery", amount:920},{desc:"Orbital Dockage", amount:310}]},
+      {name:"DeepSpaceOps", bills:[{desc:"Antenna Access", amount: 400},{desc:"Robot Servicing", amount: 280}]},
+      {name:"StarFront", bills:[{desc:"Cubesat Handling", amount: 290},{desc:"Launch Transport", amount: 1200}]},
+      {name:"NovaFlight", bills:[{desc:"Booster Recovery", amount: 900},{desc:"Telemetry package", amount: 145}]},
+      {name:"CelestiWorks", bills:[{desc:"Observation Pass", amount: 80},{desc:"Orbiter Maintenance", amount: 240},{desc:"Science Support", amount: 420}]},
+      {name:"Starlance", bills:[{desc:"Environmental Systems", amount: 1300},{desc:"Docking Fee", amount: 120},{desc:"Power Interface", amount: 400}]},
+      {name:"LunaTech", bills:[{desc:"Lunar Habitat Resupply", amount: 940}]},
+      {name:"Aurora Galaxy", bills:[{desc:"Cosmonaut Meal Pack", amount: 175},{desc:"Promotional Image", amount: 220},{desc:"Deep Space Sat Rental", amount: 580},{desc:"Mission Comms", amount: 155}]},
+      {name:"FleetX", bills:[{desc:"Payload Insurance", amount: 210},{desc:"Micro-rocket Propulsion", amount: 1010}]},
+      {name:"Cosmosys", bills:[{desc:"Simulator Session", amount: 300},{desc:"GSE Supplies", amount: 120},{desc:"Mission Brief", amount: 75}]}
+    ];
+    const randomInt = (min,max)=>Math.floor(Math.random()*(max-min+1))+min;
+    let gameData = {};
+    let scoreGood = 0, scoreBad = 0;
+    const tips = [
+      "<span>Tip:</span> Sum up the checks and bills—if totals mismatch, there's a problem.",
+      "<span>Tip:</span> Scan for <b>duplicate transaction numbers</b>—that usually means a payment error!",
+      "<span>Tip:</span> Sometimes, a single check may cover multiple bills. Look for an allocation note.",
+      "<span>Tip:</span> Some checks may have incorrect amounts—even if the number of checks and bills matches.",
+      "<span>Tip:</span> There can be more than one issue in a round. Select all that apply.",
+      "<span>Tip:</span> Carefully read every check’s transaction number: all should be unique.",
+      "<span>Tip:</span> Extra checks mean the client might have paid for something not invoiced.",
+      "<span>Tip:</span> <kbd>Everything paid exactly</kbd> only if all bills are covered—no less, no more!",
+      "<span>Tip:</span> If one check covers multiple bills, it will say which ones in the checklist.",
+      "<span>Tip:</span> If you’re unsure, double-check the bill and check totals in green.",
+      "<span>Tip:</span> If you select “There’s a problem”, double-check you’ve found every issue!"
+    ];
+    let tipIndex = 0;
+    function rotateTip() {
+      document.getElementById("tipbar").innerHTML = tips[tipIndex];
+      tipIndex = (tipIndex + 1) % tips.length;
+    }
+    setInterval(rotateTip, 12000);
+    function pickCase() {
+      const client = clients[randomInt(0,clients.length-1)];
+      const bills = JSON.parse(JSON.stringify(client.bills));
+      const billTotal = bills.reduce((a,b)=>a+b.amount,0);
+      let errTypes = [];
+      let sc = randomInt(1,10);
+      if (sc<=3) {
+        errTypes = ["ok"];
+      } else if (sc<=4) {
+        errTypes = ["missing"];
+      } else if (sc<=5) {
+        errTypes = ["extra"];
+      } else if (sc<=6) {
+        errTypes = ["amount"];
+      } else if (sc<=7) {
+        errTypes = ["tx"];
+      } else if (sc<=8) {
+        errTypes = ["combined"];
+      } else if (sc<=9) {
+        errTypes = ["combined","tx"];
+      } else {
+        errTypes = ["amount","extra","tx"];
+      }
+      let checks = [];
+      const billLen = bills.length;
+      if (errTypes.includes("ok")) {
+        for (let i=0; i<bills.length; ++i) {
+          checks.push({num: 1001+i,
+                      trans: rand6digits(),
+                      amount: bills[i].amount});
+        }
+      } else if (errTypes.length===1 && errTypes[0]==="missing") {
+        for (let i=0; i<bills.length-1; ++i) {
+          checks.push({num: 2100+i,
+                      trans: rand6digits(),
+                      amount: bills[i].amount});
+        }
+      } else if (errTypes.length===1 && errTypes[0]==="extra") {
+        for (let i=0; i<bills.length; ++i) {
+          checks.push({num: 2200+i,
+                      trans: rand6digits(),
+                      amount: bills[i].amount});
+        }
+        checks.push({
+          num: 2200+Math.floor(Math.random()*40),
+          trans: rand6digits(),
+          amount: randomInt(45,220)
+        });
+      } else if (errTypes.includes("combined")) {
+        let idxes = bills.map((b,i)=>i);
+        shuffle(idxes);
+        let combineCount = Math.min(2, Math.max(2, Math.floor(Math.random() * (billLen/1.5))));
+        let group = idxes.slice(0, combineCount);
+        let rest = idxes.slice(combineCount);
+        let sum = group.map(i=>bills[i].amount).reduce((a,b)=>a+b,0);
+        let combinedTx = rand6digits();
+        checks.push({num: 3100, amount: sum, trans: combinedTx, allocation: group});
+        for (let i=0; i<rest.length; ++i) {
+          checks.push({
+            num: 3101+i,
+            amount: bills[rest[i]].amount,
+            trans: rand6digits()
+          });
+        }
+        if (errTypes.includes("tx")) {
+          checks[0].trans = rand6digits();
+        }
+      } else if (errTypes.length===1 && errTypes[0]==="amount") {
+        for (let i=0; i<bills.length; ++i) {
+          let wrong = bills[i].amount;
+          if (i === 0) wrong += (randomInt(-24,24) || 7);
+          checks.push({
+            num: 4001+i,
+            trans: rand6digits(),
+            amount: wrong
+          });
+        }
+      } else if (errTypes.includes("tx")) {
+        for (let i=0; i<bills.length; ++i) {
+          checks.push({
+            num: 5001+i,
+            trans: i===0 ? "123123" : rand6digits(),
+            amount: bills[i].amount
+          });
+        }
+        if (errTypes.includes("amount")) {
+          checks[0].amount += randomInt(1,17);
+        }
+        if (errTypes.includes("extra")) {
+          checks.push({
+            num: 5990 + Math.floor(Math.random()*30),
+            trans: "123123",
+            amount: randomInt(28,121)
+          });
+        }
+      } else {
+        for (let i=0; i<bills.length; ++i) {
+          checks.push({num: 11100+i, trans: rand6digits(), amount: bills[i].amount});
+        }
+      }
+      if (errTypes.includes("tx") && !checks.some((c,i,arr)=>arr.findIndex(x=>x.trans === c.trans)!=i)) {
+        if (checks.length > 1) {
+          checks[1].trans = checks[0].trans;
+        }
+      }
+      for (let i = 0; i < randomInt(0, 1); ++i) checks.sort(()=>Math.random()-0.5);
+      const checkTotal = checks.reduce((a,b)=>a+b.amount,0);
+      gameData = {
+        client: client.name,
+        bills,
+        billTotal,
+        checks,
+        checkTotal,
+        errTypes
+      };
+    }
+    function shuffle(a) {
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+    }
+    function render() {
+      document.getElementById("status").textContent = "";
+      document.getElementById("reasonArea").style.display="none";
+      document.getElementById("approveBtn").disabled = false;
+      document.getElementById("problemBtn").disabled = false;
+      document.getElementById("submitBtn").disabled = false;
+      document.querySelector("h3").innerHTML = `Client Invoice<br><span style="color:#bdebff;font-size:15px">${gameData.client}</span>`;
+      document.getElementById("bill-list").innerHTML =
+        gameData.bills.map(b=>`<li>${b.desc}: <strong>$${b.amount}</strong></li>`).join("");
+      document.getElementById("bill-total").textContent = gameData.billTotal;
+      document.getElementById("check-list").innerHTML =
+        gameData.checks.map(c=>{
+          let alloc = "";
+          if (c.allocation && c.allocation.length > 1) {
+            alloc = `<span class="alloc">(This check covers: ${
+              c.allocation.map(i=>gameData.bills[i].desc).join(", ")
+            })</span>`;
+          }
+          return `<li>Check #<strong>${c.num}</strong> — <strong>$${c.amount}</strong>
+            <span class="trans">TX:${c.trans}</span>${alloc}
+          </li>`;
+        }).join("");
+      document.getElementById("check-total").textContent = gameData.checkTotal;
+      document.getElementById("scoreGood").textContent = scoreGood;
+      document.getElementById("scoreBad").textContent = scoreBad;
+      document.querySelectorAll('.errChk').forEach(e=>e.checked=false);
+      if (tipIndex===0) setTimeout(rotateTip,300);
+    }
+    function approve() {
+      document.getElementById("approveBtn").disabled = true;
+      document.getElementById("problemBtn").disabled = true;
+      let err = gameData.errTypes;
+      if (err.length===1 && err[0]==="ok") {
+        scoreGood++;
+        document.getElementById("status").innerHTML = `<span class="success">Correct! All payments match the invoice.</span>`;
+      } else {
+        scoreBad++;
+        document.getElementById("status").innerHTML = `<span class="wrong">Incorrect. There is actually a problem!</span>`;
+      }
+      setTimeout(()=>{ pickCase(); render(); }, 1700);
+    }
+    function showReasonArea() {
+      document.getElementById("reasonArea").style.display = "";
+      setTimeout(()=>{ document.getElementById("reasonArea").style.display = "flex"; }, 0)
+      document.getElementById("approveBtn").disabled = true;
+      document.getElementById("problemBtn").disabled = true;
+    }
+    function submitReason() {
+      document.getElementById("submitBtn").disabled = true;
+      let checked = Array.from(document.querySelectorAll('.errChk')).filter(e=>e.checked).map(e=>e.value).sort();
+      let errs = (gameData.errTypes.filter(x=>x!=="ok")).sort();
+      let good = (checked.length === errs.length && checked.every((v,i)=>v===errs[i]));
+      if (good) {
+        scoreGood++;
+        let msg = "";
+        if (errs.includes("missing")) msg += "Missing payment detected. ";
+        if (errs.includes("extra")) msg += "Extra check present. ";
+        if (errs.includes("amount")) msg += "Wrong amount detected. ";
+        if (errs.includes("tx")) msg += "Transaction number mismatch detected. ";
+        if (errs.includes("combined")) msg += "A check covers multiple bills. ";
+        document.getElementById("status").innerHTML = `<span class="success">Correct! ${msg}</span>`;
+      } else {
+        scoreBad++;
+        let actual = errs.map(e=>{
+          return {
+            missing:    "a payment is missing.",
+            extra:      "an extra check.",
+            amount:     "amount error.",
+            tx:         "transaction number problem.",
+            combined:   "a check covers multiple bills."
+          }[e];
+        }).join(" | ");
+        document.getElementById("status").innerHTML = `<span class="wrong">Incorrect. Actual: ${actual}</span>`;
+      }
+      setTimeout(()=>{ pickCase(); render(); }, 2200);
+    }
+    pickCase();
+    render();
+  </script>
+</body>
+</html>
