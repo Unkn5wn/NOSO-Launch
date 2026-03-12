@@ -31,6 +31,14 @@
       color: #f7eba0;
       font-weight: bold;
     }
+    .timerbar {
+      text-align: center;
+      font-size: 1.04em;
+      color: #b4f9ec;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
     .main-columns {
       display: flex;
       gap: 28px;
@@ -76,7 +84,6 @@
       margin-left: auto;
       margin-right: auto;
     }
-
     .button-row {
       display: flex;
       flex-direction: row;
@@ -105,6 +112,7 @@
       box-sizing: border-box;
     }
     .button-row button:hover { background: #3196c7; }
+    .button-row button:disabled { background: #596e7f; cursor: not-allowed;}
 
     .reason-area {
       margin-bottom: 0;
@@ -150,6 +158,7 @@
       margin: 9px auto 0 auto;
     }
     #submitBtn:hover { background: #3196c7; }
+    #submitBtn:disabled { background: #596e7f; cursor:not-allowed; }
     .success { color: #a0ffb6; font-weight: bold; }
     .wrong   { color: #ffe363; font-weight: bold; }
     .status { text-align: center; font-size: 1.11em; margin: 10px 0 0 0; min-height: 24px;}
@@ -201,7 +210,45 @@
       font-family: monospace;
       margin-left: 5px;
     }
-
+    .endgamebox {
+      margin: 35px auto 0 auto;
+      background: #2d3360;
+      border-radius: 13px;
+      padding: 30px 15px 22px 15px;
+      text-align: center;
+      box-shadow: 0 6px 40px #0116b044;
+      font-size: 1.18em;
+      font-weight: bold;
+      color: #ffffe8;
+      max-width: 430px;
+      border: 2.5px solid #6ef1ff6b;
+    }
+    .endgamebox .bigscore { font-size: 1.38em; color: #8fffc7; font-weight: bold;}
+    .endgamebox .timetotal { color: #adecff; display:block; font-size:1.1em; margin-top:7px;}
+    .endgamebox .result-txt {
+      display: block;
+      font-size: 1.28em;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+    .endgamebox .hired { color: #c2fd6b; }
+    .endgamebox .considered { color: #ffe67e; }
+    .endgamebox .rejected { color: #ff9393; }
+    .endgamebox button {
+      margin-top: 19px;
+      background: #254ba7;
+      color: #fff;
+      font-size: 1em;
+      padding: 7px 30px;
+      border-radius: 8px;
+      border: none;
+      box-shadow: 0 2px 10px #254ba7bb;
+      font-weight:bold;
+      cursor:pointer;
+      letter-spacing:1px;
+      transition: background 0.12s;
+    }
+    .endgamebox button:hover { background: #1c386f;}
     @media (max-width: 650px) {
       .container { max-width: 98vw; }
       .main-columns { flex-direction: column; gap: 10px; }
@@ -219,14 +266,17 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="main-container">
     <h1>Automatic Check Game</h1>
+    <div class="timerbar">Time Elapsed: <span id="timerVal">0:00</span></div>
     <div class="scorebar">
       Correct: <span id="scoreGood">0</span>
       &nbsp;|&nbsp;
       Missed: <span id="scoreBad">0</span>
+      &nbsp;|&nbsp;
+      Round: <span id="roundNum">1</span>/20
     </div>
-    <div class="main-columns">
+    <div class="main-columns" id="main-columns">
       <div class="col">
         <h3>Client Invoice</h3>
         <ul id="bill-list" class="checklist"></ul>
@@ -238,7 +288,7 @@
         <div><span class="check-sum">Total: $<span id="check-total"></span></span></div>
       </div>
     </div>
-    <form class="controls" onsubmit="return false;">
+    <form class="controls" id="controls" onsubmit="return false;">
       <div class="button-row">
         <button type="button" onclick="approve()" id="approveBtn">Everything paid exactly</button>
         <button type="button" onclick="showReasonArea()" id="problemBtn">There's a problem</button>
@@ -253,6 +303,7 @@
       </span>
     </form>
     <div class="status" id="status"></div>
+    <div id="endgame" style="display:none;"></div>
     <div class="footer">Game by Copilot &amp; Unkn5wn</div>
     <div class="tipbar" id="tipbar"></div>
   </div>
@@ -274,9 +325,6 @@
       {name:"FleetX", bills:[{desc:"Payload Insurance", amount: 210},{desc:"Micro-rocket Propulsion", amount: 1010}]},
       {name:"Cosmosys", bills:[{desc:"Simulator Session", amount: 300},{desc:"GSE Supplies", amount: 120},{desc:"Mission Brief", amount: 75}]}
     ];
-    const randomInt = (min,max)=>Math.floor(Math.random()*(max-min+1))+min;
-    let gameData = {};
-    let scoreGood = 0, scoreBad = 0;
     const tips = [
       "<span>Tip:</span> Sum up the checks and bills—if totals mismatch, there's a problem.",
       "<span>Tip:</span> Scan for <b>duplicate transaction numbers</b>—that usually means a payment error!",
@@ -296,12 +344,39 @@
       tipIndex = (tipIndex + 1) % tips.length;
     }
     setInterval(rotateTip, 12000);
+
+    let gameData = {};
+    let scoreGood = 0, scoreBad = 0, rounds = 0;
+    const MAXROUNDS = 20;
+    let timerStarted = false;
+    let startTime = 0, elapsedSec = 0, timerInt = null;
+
+    function startGlobalTimer() {
+      if (!timerStarted) {
+        timerStarted = true;
+        startTime = Date.now();
+        timerInt = setInterval(updateTimerBar, 333);
+      }
+    }
+    function updateTimerBar() {
+      let now = Date.now();
+      elapsedSec = Math.floor((now - startTime)/1000);
+      document.getElementById("timerVal").textContent = mmss(elapsedSec);
+    }
+    function stopGlobalTimer() {
+      if (timerInt) { clearInterval(timerInt); timerInt = null;}
+    }
+    function mmss(secs) {
+      let m = Math.floor(secs/60), s = secs%60;
+      return `${m}:${s.toString().padStart(2,"0")}`;
+    }
+
     function pickCase() {
-      const client = clients[randomInt(0,clients.length-1)];
+      const client = clients[Math.floor(Math.random()*clients.length)];
       const bills = JSON.parse(JSON.stringify(client.bills));
       const billTotal = bills.reduce((a,b)=>a+b.amount,0);
       let errTypes = [];
-      let sc = randomInt(1,10);
+      let sc = Math.floor(Math.random()*10)+1;
       if (sc<=3) {
         errTypes = ["ok"];
       } else if (sc<=4) {
@@ -323,30 +398,27 @@
       const billLen = bills.length;
       if (errTypes.includes("ok")) {
         for (let i=0; i<bills.length; ++i) {
-          checks.push({num: 1001+i,
-                      trans: rand6digits(),
-                      amount: bills[i].amount});
+          checks.push({num: 1001+i, trans: rand6digits(), amount: bills[i].amount});
         }
       } else if (errTypes.length===1 && errTypes[0]==="missing") {
         for (let i=0; i<bills.length-1; ++i) {
-          checks.push({num: 2100+i,
-                      trans: rand6digits(),
-                      amount: bills[i].amount});
+          checks.push({num: 2100+i, trans: rand6digits(), amount: bills[i].amount});
         }
       } else if (errTypes.length===1 && errTypes[0]==="extra") {
         for (let i=0; i<bills.length; ++i) {
-          checks.push({num: 2200+i,
-                      trans: rand6digits(),
-                      amount: bills[i].amount});
+          checks.push({num: 2200+i, trans: rand6digits(), amount: bills[i].amount});
         }
         checks.push({
           num: 2200+Math.floor(Math.random()*40),
           trans: rand6digits(),
-          amount: randomInt(45,220)
+          amount: Math.floor(Math.random()*176)+45
         });
       } else if (errTypes.includes("combined")) {
         let idxes = bills.map((b,i)=>i);
-        shuffle(idxes);
+        for (let i = idxes.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [idxes[i], idxes[j]] = [idxes[j], idxes[i]];
+        }
         let combineCount = Math.min(2, Math.max(2, Math.floor(Math.random() * (billLen/1.5))));
         let group = idxes.slice(0, combineCount);
         let rest = idxes.slice(combineCount);
@@ -366,7 +438,7 @@
       } else if (errTypes.length===1 && errTypes[0]==="amount") {
         for (let i=0; i<bills.length; ++i) {
           let wrong = bills[i].amount;
-          if (i === 0) wrong += (randomInt(-24,24) || 7);
+          if (i === 0) wrong += (Math.floor(Math.random()*49)-24 || 7);
           checks.push({
             num: 4001+i,
             trans: rand6digits(),
@@ -382,13 +454,13 @@
           });
         }
         if (errTypes.includes("amount")) {
-          checks[0].amount += randomInt(1,17);
+          checks[0].amount += Math.floor(Math.random()*17)+1;
         }
         if (errTypes.includes("extra")) {
           checks.push({
             num: 5990 + Math.floor(Math.random()*30),
             trans: "123123",
-            amount: randomInt(28,121)
+            amount: Math.floor(Math.random()*94)+28
           });
         }
       } else {
@@ -401,7 +473,7 @@
           checks[1].trans = checks[0].trans;
         }
       }
-      for (let i = 0; i < randomInt(0, 1); ++i) checks.sort(()=>Math.random()-0.5);
+      for (let i = 0; i < Math.floor(Math.random()*2); ++i) checks.sort(()=>Math.random()-0.5);
       const checkTotal = checks.reduce((a,b)=>a+b.amount,0);
       gameData = {
         client: client.name,
@@ -411,12 +483,6 @@
         checkTotal,
         errTypes
       };
-    }
-    function shuffle(a) {
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
     }
     function render() {
       document.getElementById("status").textContent = "";
@@ -443,8 +509,44 @@
       document.getElementById("check-total").textContent = gameData.checkTotal;
       document.getElementById("scoreGood").textContent = scoreGood;
       document.getElementById("scoreBad").textContent = scoreBad;
+      document.getElementById("roundNum").textContent = (rounds+1);
       document.querySelectorAll('.errChk').forEach(e=>e.checked=false);
       if (tipIndex===0) setTimeout(rotateTip,300);
+      updateTimerBar();
+      startGlobalTimer();
+    }
+    function disableAllControls() {
+      document.getElementById("approveBtn").disabled = true;
+      document.getElementById("problemBtn").disabled = true;
+      document.getElementById("submitBtn").disabled = true;
+      document.querySelectorAll('.errChk').forEach(e=>e.disabled=true);
+    }
+    function gameOver() {
+      disableAllControls();
+      document.getElementById("controls").style.display = "none";
+      document.getElementById("main-columns").style.opacity = 0.3;
+      document.getElementById("status").textContent = "";
+      stopGlobalTimer();
+      let res = "", emoji = "", clas = "";
+      if (scoreGood === 20) { res = "You're hired!"; emoji = "🚀"; clas = "hired";}
+      else if (scoreGood >= 18) { res = "You will be considered."; emoji = "👍"; clas = "considered";}
+      else { res = "Your application was rejected."; emoji = "❌"; clas = "rejected";}
+      document.getElementById("endgame").innerHTML =
+        `<div class="endgamebox">
+          <div class="bigscore">Score: ${scoreGood} / 20</div>
+          <span class="timetotal">Time: ${mmss(elapsedSec)}</span>
+          <span class="result-txt ${clas}">${res} ${emoji}</span>
+          <button onclick="restartGame()">Play Again</button>
+        </div>`;
+      document.getElementById("endgame").style.display = "";
+    }
+    function advance(nextFn) {
+      rounds++;
+      if (rounds >= MAXROUNDS) {
+        setTimeout(gameOver, 777);
+      } else {
+        setTimeout(()=>{ pickCase(); render(); }, nextFn);
+      }
     }
     function approve() {
       document.getElementById("approveBtn").disabled = true;
@@ -457,7 +559,7 @@
         scoreBad++;
         document.getElementById("status").innerHTML = `<span class="wrong">Incorrect. There is actually a problem!</span>`;
       }
-      setTimeout(()=>{ pickCase(); render(); }, 1700);
+      advance(1700);
     }
     function showReasonArea() {
       document.getElementById("reasonArea").style.display = "";
@@ -492,10 +594,18 @@
         }).join(" | ");
         document.getElementById("status").innerHTML = `<span class="wrong">Incorrect. Actual: ${actual}</span>`;
       }
-      setTimeout(()=>{ pickCase(); render(); }, 2200);
+      advance(2200);
     }
-    pickCase();
-    render();
+    function restartGame() {
+      scoreGood = 0; scoreBad = 0; rounds = 0;
+      timerStarted = false; elapsedSec = 0;
+      document.getElementById("endgame").style.display = "none";
+      document.getElementById("main-columns").style.opacity = 1;
+      document.getElementById("controls").style.display = "";
+      updateTimerBar();
+      pickCase(); render();
+    }
+    pickCase(); render();
   </script>
 </body>
 </html>
