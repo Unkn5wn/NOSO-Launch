@@ -2,16 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Automatic Check Game</title>
+  <title>Automatic Checks Game</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
+    html, body { min-height:100vh; }
     body {
-      background: #23264d;
+      background: #181e33;
       color: #e3f2fd;
       font-family: Arial, sans-serif;
-      margin: 0; padding: 0; min-height: 100vh;
+      margin: 0; padding: 0; min-height: 100vh; position:relative;
+      overflow-x:hidden;
+    }
+    #space-canvas {
+      position: fixed;
+      z-index: 0;
+      top:0; left:0; width:100vw; height:100vh; pointer-events:none;
+      display:block;
+      background: transparent;
     }
     .container {
+      position: relative;
+      z-index: 2;
       max-width: 760px;
       margin: 38px auto 32px auto;
       background: rgba(30,34,60,0.98);
@@ -19,235 +30,39 @@
       border-radius: 16px;
       box-shadow: 0 3px 40px #223, 0 0px 0 2.5px #dde1ff33;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 12px;
-      color: #ffebc9;
-    }
-    .scorebar {
-      text-align:center;
-      font-size: 1.05em;
-      margin: 6px 0 15px 0;
-      color: #f7eba0;
-      font-weight: bold;
-    }
-    .timerbar {
-      text-align: center;
-      font-size: 1.04em;
-      color: #b4f9ec;
-      font-weight: bold;
-      letter-spacing: 1px;
-      margin-bottom: 6px;
-    }
-    .main-columns {
-      display: flex;
-      gap: 28px;
-      justify-content: center;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-    }
-    .col {
-      background: rgba(44,49,88,0.98);
-      border-radius: 11px;
-      padding: 16px 14px;
-      box-shadow: 0 2px 12px #2c3755ac;
-      min-width: 220px;
-      flex: 1 1 240px;
-      margin-bottom: 16px;
-      box-sizing: border-box;
-    }
-    .col h3 {
-      color: #ffeeaa;
-      font-size: 18px;
-      margin: 0 0 11px 0;
-    }
-    ul {
-      margin: 0 0 0 18px;
-      padding: 0;
-      color: #aeefff;
-      font-size: 15px;
-    }
-    .checklist li {
-      margin-bottom: 6px;
-      font-size: 15.5px;
-      list-style-type: "— ";
-    }
+    h1 { text-align: center; margin-bottom: 12px; color: #ffebc9; }
+    .scorebar { text-align:center; font-size: 1.05em; margin: 6px 0 15px 0; color: #f7eba0; font-weight: bold;}
+    .timerbar { text-align: center; font-size: 1.04em; color: #b4f9ec; font-weight: bold; letter-spacing: 1px; margin-bottom: 6px; }
+    .main-columns { display: flex; gap: 28px; justify-content: center; margin-bottom: 18px; flex-wrap: wrap;}
+    .col { background: rgba(44,49,88,0.98); border-radius: 11px; padding: 16px 14px; box-shadow: 0 2px 12px #2c3755ac; min-width: 220px; flex: 1 1 240px; margin-bottom: 16px; box-sizing: border-box;}
+    .col h3 { color: #ffeeaa; font-size: 18px; margin: 0 0 11px 0;}
+    .checklist li { margin-bottom: 6px; font-size: 15.5px; list-style-type: "— ";}
     .checklist strong { color: #e3bd57; }
     .check-sum { font-weight: bold; color: #8ffcce; }
-    .controls {
-      margin: 19px 0 10px 0;
-      width: 100%;
-      max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .button-row {
-      display: flex;
-      flex-direction: row;
-      gap: 10px;
-      width: 100%;
-      justify-content: center;
-      margin-bottom: 5px;
-    }
-    .button-row button {
-      font-size: 13px;
-      background: #146593;
-      border: none;
-      border-radius: 7px;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 2px 8px #0080c099;
-      letter-spacing: 1px;
-      transition: background 0.12s;
-      min-width: 135px;
-      max-width: 210px;
-      padding: 7px 0;
-      text-align: center;
-      flex: 1 1 0;
-      margin: 0;
-      box-sizing: border-box;
-    }
+    .controls { margin: 19px 0 10px 0; width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: center; margin-left: auto; margin-right: auto;}
+    .button-row { display: flex; flex-direction: row; gap: 10px; width: 100%; justify-content: center; margin-bottom: 5px;}
+    .button-row button { font-size: 13px; background: #146593; border: none; border-radius: 7px; color: #fff; font-weight: bold; cursor: pointer; box-shadow: 0 2px 8px #0080c099; letter-spacing: 1px; transition: background 0.12s; min-width: 135px; max-width: 210px; padding: 7px 0; text-align: center; flex: 1 1 0; margin: 0; box-sizing: border-box;}
     .button-row button:hover { background: #3196c7; }
     .button-row button:disabled { background: #596e7f; cursor: not-allowed;}
-
-    .reason-area {
-      margin-bottom: 0;
-      width: 100%;
-      max-width: 320px;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 3px;
-    }
-    .reason-area label {
-      background: none;
-      color: #fffacd;
-      font-size: 13px;
-      font-weight: normal;
-      cursor: pointer;
-      padding: 4px 2px 4px 0;
-      display: flex;
-      align-items: center;
-      width: 100%;
-      min-width: 135px;
-      max-width: 300px;
-    }
-    .controls input[type="checkbox"] {
-      transform: scale(1.11);
-      margin-right: 15px;
-    }
-    #submitBtn {
-      font-size: 14px;
-      background: #146593;
-      padding: 7px 0;
-      border: none;
-      border-radius: 7px;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 2px 8px #0080c099;
-      letter-spacing: 1px;
-      transition: background 0.12s;
-      width: 95%;
-      min-width: 110px;
-      max-width: 300px;
-      margin: 9px auto 0 auto;
-    }
+    .reason-area { margin-bottom: 0; width: 100%; max-width: 320px; display: flex; flex-direction: column; align-items: stretch; gap: 3px;}
+    .reason-area label { background: none; color: #fffacd; font-size: 13px; font-weight: normal; cursor: pointer; padding: 4px 2px 4px 0; display: flex; align-items: center; width: 100%; min-width: 135px; max-width: 300px;}
+    .controls input[type="checkbox"] { transform: scale(1.11); margin-right: 15px;}
+    #submitBtn { font-size: 14px; background: #146593; padding: 7px 0; border: none; border-radius: 7px; color: #fff; font-weight: bold; cursor: pointer; box-shadow: 0 2px 8px #0080c099; letter-spacing: 1px; transition: background 0.12s; width: 95%; min-width: 110px; max-width: 300px; margin: 9px auto 0 auto;}
     #submitBtn:hover { background: #3196c7; }
     #submitBtn:disabled { background: #596e7f; cursor:not-allowed; }
     .success { color: #a0ffb6; font-weight: bold; }
     .wrong   { color: #ffe363; font-weight: bold; }
     .status { text-align: center; font-size: 1.11em; margin: 10px 0 0 0; min-height: 24px;}
-    .footer {
-      text-align: center;
-      margin: 38px 0 0 0;
-      color: #e5e7ff89;
-      font-size: 13px;
-      letter-spacing: 1px;
-    }
-    .tipbar {
-      display: block;
-      position: fixed;
-      left: 0; right: 0; bottom: 0;
-      background: #35377a;
-      color: #ffd;
-      font-size: 1.01em;
-      padding: 9px 2vw 5px 2vw;
-      text-align: center;
-      font-family: Arial,sans-serif;
-      letter-spacing: 1px;
-      z-index: 10;
-      border-top: 2.5px solid #cde9ff27;
-      box-shadow: 0 -2px 18px #13213799;
-      user-select: none;
-      opacity: 0.96;
-      min-height: 28px;
-      font-weight: 600;
-    }
-    .tipbar span {
-      color: #8beaff;
-      font-weight: bold;
-      margin-right: 8px;
-    }
-    .trans {
-      color: #95ceff;
-      font-size: 12px;
-      margin-left: 6px;
-      font-family: monospace;
-      background: #293b51;
-      border-radius: 3px;
-      padding: 0 5px;
-    }
-    .alloc {
-      display: block;
-      font-size: 11.5px;
-      margin-top: 0.5px;
-      color: #f7eba0;
-      font-family: monospace;
-      margin-left: 5px;
-    }
-    .endgamebox {
-      margin: 35px auto 0 auto;
-      background: #2d3360;
-      border-radius: 13px;
-      padding: 30px 15px 22px 15px;
-      text-align: center;
-      box-shadow: 0 6px 40px #0116b044;
-      font-size: 1.18em;
-      font-weight: bold;
-      color: #ffffe8;
-      max-width: 430px;
-      border: 2.5px solid #6ef1ff6b;
-    }
+    .footer { text-align: center; margin: 38px 0 0 0; color: #e5e7ff89; font-size: 13px; letter-spacing: 1px; }
+    .tipbar { display: block; position: fixed; left: 0; right: 0; bottom: 0; background: #35377a; color: #ffd; font-size: 1.01em; padding: 9px 2vw 5px 2vw; text-align: center; font-family: Arial,sans-serif; letter-spacing: 1px; z-index: 10; border-top: 2.5px solid #cde9ff27; box-shadow: 0 -2px 18px #13213799; user-select: none; opacity: 0.96; min-height: 28px; font-weight: 600; }
+    .endgamebox { margin: 35px auto 0 auto; background: #2d3360; border-radius: 13px; padding: 30px 15px 22px 15px; text-align: center; box-shadow: 0 6px 40px #0116b044; font-size: 1.18em; font-weight: bold; color: #ffffe8; max-width: 430px; border: 2.5px solid #6ef1ff6b;}
     .endgamebox .bigscore { font-size: 1.38em; color: #8fffc7; font-weight: bold;}
     .endgamebox .timetotal { color: #adecff; display:block; font-size:1.1em; margin-top:7px;}
-    .endgamebox .result-txt {
-      display: block;
-      font-size: 1.28em;
-      margin-top: 12px;
-      font-weight: bold;
-    }
+    .endgamebox .result-txt { display: block; font-size: 1.28em; margin-top: 12px; font-weight: bold;}
     .endgamebox .hired { color: #c2fd6b; }
     .endgamebox .considered { color: #ffe67e; }
     .endgamebox .rejected { color: #ff9393; }
-    .endgamebox button {
-      margin-top: 19px;
-      background: #254ba7;
-      color: #fff;
-      font-size: 1em;
-      padding: 7px 30px;
-      border-radius: 8px;
-      border: none;
-      box-shadow: 0 2px 10px #254ba7bb;
-      font-weight:bold;
-      cursor:pointer;
-      letter-spacing:1px;
-      transition: background 0.12s;
-    }
+    .endgamebox button { margin-top: 19px; background: #254ba7; color: #fff; font-size: 1em; padding: 7px 30px; border-radius: 8px; border: none; box-shadow: 0 2px 10px #254ba7bb; font-weight:bold; cursor:pointer; letter-spacing:1px; transition: background 0.12s;}
     .endgamebox button:hover { background: #1c386f;}
     @media (max-width: 650px) {
       .container { max-width: 98vw; }
@@ -266,8 +81,9 @@
   </style>
 </head>
 <body>
+  <canvas id="space-canvas"></canvas>
   <div class="container" id="main-container">
-    <h1>Automatic Check Game</h1>
+    <h1>Automatic Checks Game</h1>
     <div class="timerbar">Time Elapsed: <span id="timerVal">0:00</span></div>
     <div class="scorebar">
       Correct: <span id="scoreGood">0</span>
@@ -308,6 +124,77 @@
     <div class="tipbar" id="tipbar"></div>
   </div>
   <script>
+    // -- ANIMATED EMOJI DISTRACTION LAYER (LIMITED FOR PERFORMANCE) --
+    const emojiObjects = [
+      {emoji:"🚀", size:32}, {emoji:"🪐", size:28}, {emoji:"🌟", size:22}, {emoji:"🛸", size:28},
+      {emoji:"👾", size:26}, {emoji:"👽", size:25}, {emoji:"☄️", size:22}
+    ];
+    const CANVAS = document.getElementById('space-canvas');
+    let spaceW = 0, spaceH = 0;
+
+    function resizeSpaceCanvas() {
+      spaceW = window.innerWidth;
+      spaceH = window.innerHeight;
+      CANVAS.width = spaceW;
+      CANVAS.height = spaceH;
+    }
+    window.addEventListener('resize', resizeSpaceCanvas);
+
+    let distractions = [];
+    function addEmojiDistractor() {
+      let e = emojiObjects[Math.floor(Math.random()*emojiObjects.length)];
+      let fontSize = e.size + Math.random()*10;
+      let y = Math.random()*spaceH;
+      let left = Math.random()<0.5;
+      let x = left ? -fontSize-10 : spaceW+fontSize+10;
+      let vx = left ? (Math.random()*0.6+0.25) : -(Math.random()*0.6+0.25);
+      let vy = (Math.random()-0.5)*0.12;
+      distractions.push({
+        emoji: e.emoji,
+        x: x, y: y,
+        vx:vx, vy:vy,
+        sz:fontSize,
+        rot: Math.random()*Math.PI*2,
+        t: Date.now() + Math.random()*40000
+      });
+    }
+
+    function drawEmojiDistraction(ctx, obj, time) {
+      ctx.save();
+      ctx.translate(obj.x, obj.y);
+      let w = obj.sz, h = obj.sz;
+      ctx.rotate(obj.rot + Math.sin(time/650+obj.x/180)*0.07);
+      ctx.font = `${w}px serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = "#000";
+      ctx.globalAlpha = 0.96;
+      ctx.fillText(obj.emoji,0,0);
+      ctx.restore();
+    }
+
+    function animateEmojiSpace() {
+      if(spaceW<50||spaceH<50) return;
+      const ctx = CANVAS.getContext('2d');
+      ctx.clearRect(0,0,spaceW,spaceH);
+      // Limit to 7 emoji onscreen for performance
+      if(distractions.length < 7) addEmojiDistractor();
+      let time = Date.now();
+      distractions.forEach(obj => {
+        drawEmojiDistraction(ctx,obj, time);
+        obj.x += obj.vx;
+        obj.y += obj.vy + Math.sin(time/420+obj.x/200)*0.12;
+      });
+      distractions = distractions.filter(obj =>
+        obj.x>-80 && obj.x<spaceW+80 && obj.y>-80 && obj.y<spaceH+80
+      );
+      requestAnimationFrame(animateEmojiSpace);
+    }
+    resizeSpaceCanvas();
+    setTimeout(animateEmojiSpace, 250);
+
+    // ---- GAME CODE (timed, 20 rounds, as above) ----
     function rand6digits() {
       return String(Math.floor(Math.random() * 900000) + 100000);
     }
@@ -370,7 +257,6 @@
       let m = Math.floor(secs/60), s = secs%60;
       return `${m}:${s.toString().padStart(2,"0")}`;
     }
-
     function pickCase() {
       const client = clients[Math.floor(Math.random()*clients.length)];
       const bills = JSON.parse(JSON.stringify(client.bills));
