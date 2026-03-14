@@ -42,70 +42,24 @@
                     <span class="btn-icon">🏆</span>
                     <span class="btn-text">Leaderboard</span>
                 </button>
-               <button id="startMinigameBtn" class="menu-btn menu-btn-secondary">
-                    <span class="btn-icon">🎲</span>
-                    <span class="btn-text">Mini Game</span>
+               <button id="menu-Minigame-btn" onclick="launchRandomMinigame()"  class="menu-btn menu-btn-secondary">
+               <span class="btn-emoji">🎲</span>
+                Random Minigame
                 </button>
-                <button id="startRocketgameBtn" class="menu-btn menu-btn-secondary">
-                    <span class="btn-icon">⛽</span>
-                    <span class="btn-text">Rocket MiniGame</span>
-                </button>
-                <button id="startNOSOMemoryBtn" class="menu-btn menu-btn-secondary">
-                    <span class="btn-icon">📅</span>
-                    <span class="btn-text">NOSOMemory MiniGame</span>
-                </button>
-                <button id="startWeatherBtn" class="menu-btn menu-btn-secondary">
-                    <span class="btn-icon">🌤️</span>
-                    <span class="btn-text">Weather MiniGame</span>
-                </button>
-               <button id="startNOSOAIpollBtn" class="menu-btn menu-btn-secondary">
-                    <span class="btn-icon">🗳️</span>
-                    <span class="btn-text">NOSO AI POLL MiniGame</span>
-                </button>
-               <button id="startAutomaticCheckBtn" class="menu-btn menu-btn-secondary">
-                    <span class="btn-icon">💸</span>
-                    <span class="btn-text">AutomaticCheck MiniGame</span>
-                </button>
-               
-
-             <script>
-              document.getElementById('startMinigameBtn').onclick = 
-              function () {
-              window.open('minigame.html', '_blank'); // Opens in a new tab
-              }
-            </script>
-              <script>
-              document.getElementById('startRocketgameBtn').onclick = 
-              function () {
-              window.open('rocketgamefuel.html', '_blank'); // Opens in a new tab
-              }
-            </script>
-            <script>
-              document.getElementById('startNOSOMemoryBtn').onclick = 
-              function () {
-              window.open('NOSO memory game.html', '_blank'); // Opens in a new tab
-              }
-            </script>
-            <script>
-              document.getElementById('startWeatherBtn').onclick = 
-              function () {
-              window.open('Weather.html', '_blank'); // Opens in a new tab
-              }
-            </script>
-             <script>
-              document.getElementById('startNOSOAIpollBtn').onclick = 
-              function () {
-              window.open('NOSOAIpoll.html', '_blank'); // Opens in a new tab
-              }
-            </script>
                 <script>
-              document.getElementById('startAutomaticCheckBtn').onclick = 
-              function () {
-              window.open('AutomaticCheck.html', '_blank'); // Opens in a new tab
-              }
-            </script>
-   
-
+                function launchRandomMinigame() {
+                const minigames = [
+               "AutomaticCheck.html",
+               "NOSOAIpoll.html",
+               "NOSO memory game.html",
+               "Weathergame.html",
+               "rocketgamefuel.html",
+    // Add more as needed!
+  ];
+  const pick = minigames[Math.floor(Math.random() * minigames.length)];
+  window.open(pick, "_blank");
+}
+</script>
             </div>
         </div>
     </div>
@@ -507,22 +461,6 @@
             </div>
         </div>
     </div>
-
-   <!-- Mini Game Modal -->
-   <div id="minigameModal" style="display: none;">
-     <div class="modal-content">
-      <div class="modal-header">
-       <h2> 🚀NOSO-Launch Mini-Game🚀</h2>
-       <span class="close-btn" id="close-minigame">&times;</span>
-      <canvas id="gameCanvas" width="400" height="400"></canvas>
-      <div id="gameOver" style="display:none">
-      <span id="finalScore"></span>
-      <button onclick="restartGame()">Play Again</button>
-</div>
-     </div>
-         <div class="modal-body">
-               <p class="minigame-description"> Move: W/S |&nbsp; Shoot: Space</p>
-              <button id="closeMinigameBtn">Close</button> 
           </div>
        </div>
    </div>
